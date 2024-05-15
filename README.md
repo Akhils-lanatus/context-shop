@@ -50,14 +50,13 @@ Before cloning/forking this project, make sure you have the following tools inst
 1. Fork the project
 2. Clone the project
 3. Follow the instructions in the console:
-4. Navigate to the project directory cd sos-animals
-5. Install the dependencies npm install
-6. Run the project npm start
+4. Install the dependencies npm install
+5. Run the project npm run dev
 
 ## Contributors
 
 [//]: contributor-faces
 
-<a href="https://github.com/YuriDevAT"><img src="https://avatars.githubusercontent.com/u/54622834?v=4" title="Julia Undeutsch" width="80" height="80"></a>
+<a href="https://github.com/Akhils-lanatus"><img src="https://avatars.githubusercontent.com/u/79786197?v=4" title="Akhil Shah" width="80" height="80"></a>
 
 [//]: contributor-faces
