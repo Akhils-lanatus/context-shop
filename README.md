@@ -3,13 +3,13 @@
 This is just a practice project which mainly focus on better understanding react hooks.
 It include multiple functionalities like:-
 
--Add To Cart
--Remove From Cart
--Total Amount
--Sort Products
--Search Products
--Pagination
--Filters
+- Add To Cart
+- Remove From Cart
+- Total Amount
+- Sort Products
+- Search Products
+- Pagination
+- Filters
 
 ## Demo
 
