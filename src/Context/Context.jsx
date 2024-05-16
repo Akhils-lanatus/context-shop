@@ -10,15 +10,22 @@ const CartContext = createContext();
 const initialState = {
   isLoading: true,
   products: [],
-  cart: [],
-  singleProd: [],
+  darkMode: false,
+  selectedFilters: {
+    deliveryDays: new Set(),
+    selectedBrand: new Set(),
+    selectedRatings: new Set(),
+    availableInStock: false,
+  },
 };
 
 //provider
 // eslint-disable-next-line react/prop-types
 const CartContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
-  const fetchApiData = async () => {
+
+  //fetchApiData
+  const fetchApiData = () => {
     dispatch({ type: "SET_LOADING" });
     try {
       dispatch({ type: "GET_ALL_PRODUCTS", payload: ProductsData });
@@ -26,12 +33,32 @@ const CartContextProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  //toggle theme
+  const toggleTheme = () => {
+    dispatch({ type: "TOGGLE_THEME" });
+  };
+
+  //set-selected-filters
+  const setSelectedFilters = (filterOn, item, bool) => {
+    dispatch({ type: "SET_FILTER", payload: { filterOn, item, bool } });
+  };
+
+  //clear-all-filters
+  const clearAllFilters = () => {
+    dispatch({ type: "CLEAR_ALL_FILTERS" });
+  };
+
+  //fetching-data-from-api-function-call
   useEffect(() => {
     fetchApiData();
   }, []);
-  console.log(state);
   return (
-    <CartContext.Provider value={{ ...state }}>{children}</CartContext.Provider>
+    <CartContext.Provider
+      value={{ ...state, toggleTheme, setSelectedFilters, clearAllFilters }}
+    >
+      {children}
+    </CartContext.Provider>
   );
 };
 
