@@ -19,16 +19,20 @@ const cartReducer = (state, action) => {
         darkMode: !state.darkMode,
       };
 
-    case "SET_FILTER":
-      state.selectedFilters[action.payload.filterOn].add(action.payload.item);
-      if (!action.payload.bool) {
-        state.selectedFilters[action.payload.filterOn].delete(
-          action.payload.item
-        );
+    case "SET_FILTER": {
+      let { filterOn, item, bool } = action.payload;
+      const selectedFilters = { ...state.selectedFilters };
+
+      selectedFilters[filterOn].add(item);
+      if (!bool) {
+        selectedFilters[filterOn].delete(item);
       }
+
       return {
         ...state,
+        selectedFilters,
       };
+    }
 
     case "CLEAR_ALL_FILTERS":
       return {
