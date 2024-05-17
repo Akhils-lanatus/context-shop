@@ -26,6 +26,7 @@ export default function FilterDrawer({ open, setOpen }) {
     setSelectedFilters,
     clearAllFilters,
     setSelectedPriceRange,
+    setIncludeOutOfStock,
   } = useGlobalCartContext();
   const minPriceRef = useRef();
   const maxPriceRef = useRef();
@@ -258,11 +259,18 @@ export default function FilterDrawer({ open, setOpen }) {
               ml={2}
             >
               <TextField
-                sx={{ width: "30%" }}
+                sx={{
+                  width: "30%",
+                }}
                 placeholder="Min"
                 type="number"
                 inputRef={minPriceRef}
                 size="small"
+                inputProps={{
+                  style: {
+                    color: darkMode && "#fff",
+                  },
+                }}
               />
               <TextField
                 sx={{ width: "30%" }}
@@ -270,9 +278,12 @@ export default function FilterDrawer({ open, setOpen }) {
                 type="number"
                 inputRef={maxPriceRef}
                 size="small"
+                inputProps={{
+                  style: { color: darkMode && "#fff" },
+                }}
               />
               <Button
-                variant="outlined"
+                variant="solid"
                 color="neutral"
                 sx={{ color: darkMode && "white" }}
                 onClick={() => {
@@ -282,6 +293,27 @@ export default function FilterDrawer({ open, setOpen }) {
                 Go
               </Button>
             </Box>
+            <Typography
+              level="title-md"
+              fontWeight="bold"
+              sx={{
+                mt: 1,
+                color: darkMode && "#fff",
+              }}
+            >
+              Availability
+            </Typography>
+            <List>
+              <ListItem>
+                <Checkbox
+                  onChange={(event) => {
+                    setIncludeOutOfStock(event.target.checked);
+                  }}
+                  label="Include Out of Stock"
+                  sx={{ color: darkMode && "#fff" }}
+                />
+              </ListItem>
+          </List>
           </DialogContent>
 
           <Divider sx={{ mt: "auto" }} />

@@ -15,7 +15,7 @@ const initialState = {
     selectedBrand: new Set(),
     selectedRatings: new Set(),
     selectedPriceRange: { min: 0, max: 0 },
-    availableInStock: false,
+    showOutOfStock: false,
   },
 };
 
@@ -53,6 +53,11 @@ const CartContextProvider = ({ children }) => {
     dispatch({ type: "SET_PRICE_FILTER", payload: { min, max } });
   };
 
+  //include-out-of-stock
+  const setIncludeOutOfStock = (isIOOSchecked) => {
+    dispatch({ type: "SET_INCLUDEOUTOFSTOCK", payload: isIOOSchecked });
+  };
+
   //clear-all-filters
   const clearAllFilters = () => {
     dispatch({ type: "CLEAR_ALL_FILTERS" });
@@ -70,6 +75,7 @@ const CartContextProvider = ({ children }) => {
         setSelectedFilters,
         clearAllFilters,
         setSelectedPriceRange,
+        setIncludeOutOfStock,
       }}
     >
       {children}
