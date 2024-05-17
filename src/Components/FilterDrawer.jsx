@@ -32,7 +32,11 @@ export default function FilterDrawer({ open, setOpen }) {
   const handlePriceData = () => {
     let minValue = +minPriceRef.current.value;
     let maxValue = +maxPriceRef.current.value;
-    if (minValue >= 0 && maxValue > minValue) {
+    if (
+      minValue >= 0 &&
+      (minValue !== "" || maxValue !== "") &&
+      maxValue > minValue
+    ) {
       setSelectedPriceRange({
         min: minValue,
         max: maxValue,
@@ -289,7 +293,11 @@ export default function FilterDrawer({ open, setOpen }) {
           >
             <Button
               sx={{ color: darkMode && "#fff" }}
-              onClick={clearAllFilters}
+              onClick={() => {
+                clearAllFilters();
+                minPriceRef.current.value = "";
+                maxPriceRef.current.value = "";
+              }}
             >
               Clear
             </Button>

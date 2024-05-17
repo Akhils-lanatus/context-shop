@@ -50,6 +50,7 @@ const cartReducer = (state, action) => {
           deliveryDays: new Set(),
           selectedBrand: new Set(),
           selectedRatings: new Set(),
+          selectedPriceRange: { min: 0, max: 0 },
           availableInStock: false,
         },
       };
