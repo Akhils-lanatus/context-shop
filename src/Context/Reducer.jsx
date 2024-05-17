@@ -1,4 +1,5 @@
 const cartReducer = (state, action) => {
+  const selectedFilters = { ...state.selectedFilters };
   switch (action.type) {
     case "SET_LOADING":
       return {
@@ -11,6 +12,7 @@ const cartReducer = (state, action) => {
         ...state,
         isLoading: false,
         products: action.payload,
+        selectedFilters,
       };
 
     case "TOGGLE_THEME":
@@ -19,9 +21,8 @@ const cartReducer = (state, action) => {
         darkMode: !state.darkMode,
       };
 
-    case "SET_FILTER": {
+    case "SET_FILTER":
       let { filterOn, item, bool } = action.payload;
-      const selectedFilters = { ...state.selectedFilters };
 
       selectedFilters[filterOn].add(item);
       if (!bool) {
@@ -32,8 +33,16 @@ const cartReducer = (state, action) => {
         ...state,
         selectedFilters,
       };
-    }
 
+    case "SET_PRICE_FILTER":
+      const { min, max } = action.payload;
+
+      selectedFilters.selectedPriceRange.min = min;
+      selectedFilters.selectedPriceRange.max = max;
+      return {
+        ...state,
+        selectedFilters,
+      };
     case "CLEAR_ALL_FILTERS":
       return {
         ...state,
