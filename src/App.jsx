@@ -4,9 +4,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useGlobalCartContext } from "./Context/Context";
 import Header from "./Components/Header";
 import { Box } from "@mui/material";
+import HomePage from "./Components/HomePage";
 
 const App = () => {
-  const { isLoading, products, darkMode } = useGlobalCartContext();
+  const { isLoading, darkMode } = useGlobalCartContext();
   if (isLoading) {
     return (
       <Backdrop
@@ -25,7 +26,7 @@ const App = () => {
       }}
     >
       <Header />
-      <h2>Hello </h2>
+      <HomePage />
     </Box>
   );
 };

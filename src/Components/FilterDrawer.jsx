@@ -33,11 +33,7 @@ export default function FilterDrawer({ open, setOpen }) {
   const handlePriceData = () => {
     let minValue = +minPriceRef.current.value;
     let maxValue = +maxPriceRef.current.value;
-    if (
-      minValue >= 0 &&
-      (minValue !== "" || maxValue !== "") &&
-      maxValue > minValue
-    ) {
+    if (minValue >= 0 && maxValue !== 0 && maxValue > minValue) {
       setSelectedPriceRange({
         min: minValue,
         max: maxValue,
@@ -306,6 +302,7 @@ export default function FilterDrawer({ open, setOpen }) {
             <List>
               <ListItem>
                 <Checkbox
+                  checked={selectedFilters.showOutOfStock}
                   onChange={(event) => {
                     setIncludeOutOfStock(event.target.checked);
                   }}
@@ -313,7 +310,7 @@ export default function FilterDrawer({ open, setOpen }) {
                   sx={{ color: darkMode && "#fff" }}
                 />
               </ListItem>
-          </List>
+            </List>
           </DialogContent>
 
           <Divider sx={{ mt: "auto" }} />

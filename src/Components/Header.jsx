@@ -13,7 +13,14 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useGlobalCartContext } from "../Context/Context";
 import FilterDrawer from "./FilterDrawer";
-//search
+import { InputAdornment } from "@mui/material";
+import { VisibilityOff } from "@mui/icons-material";
+import Fab from "@mui/material/Fab";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import Fade from "@mui/material/Fade";
+import PropTypes from "prop-types";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -46,7 +53,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    paddingLeft: `calc(1em + ${theme.spacing(3)})`,
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
       width: "12ch",
@@ -57,23 +64,61 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Header() {
+function ScrollTop(props) {
+  const { children, window } = props;
+  const trigger = useScrollTrigger({
+    target: window ? window() : undefined,
+    disableHysteresis: true,
+    threshold: 100,
+  });
+
+  const handleClick = (event) => {
+    const anchor = document.querySelector("#back-to-top-anchor");
+
+    if (anchor) {
+      anchor.scrollIntoView({
+        block: "center",
+        behavior: "smooth",
+      });
+    }
+  };
+
+  return (
+    <Fade in={trigger}>
+      <Box
+        onClick={handleClick}
+        role="presentation"
+        sx={{ position: "fixed", bottom: 50, right: 16, zIndex: 100 }}
+      >
+        {children}
+      </Box>
+    </Fade>
+  );
+}
+
+ScrollTop.propTypes = {
+  children: PropTypes.element.isRequired,
+  window: PropTypes.func,
+};
+
+export default function Header(props) {
   const { toggleTheme, darkMode } = useGlobalCartContext();
   const [open, setOpen] = React.useState(false);
   return (
     <Box>
       {open && <FilterDrawer open={open} setOpen={setOpen} />}
-      <AppBar position="static" sx={{ bgcolor: "#254061" }}>
+      <AppBar position="fixed" sx={{ bgcolor: "#254061" }}>
         <Toolbar
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: {
               lg: "space-between",
-              md: "space-between",
-              sm: "space-between",
+              md: "space-evenly",
+              sm: "center",
               xs: "start",
             },
+            gap: 1,
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -83,6 +128,17 @@ export default function Header() {
               color="inherit"
               aria-label="menu"
               onClick={() => setOpen(true)}
+              sx={{
+                position: {
+                  sm: "absolute",
+                  lg: "unset",
+                  md: "unset",
+                  xs: "unset",
+                },
+                left: { sm: 0 },
+                ml: { sm: 2 },
+                mr: { sm: 2 },
+              }}
             >
               <MenuIcon />
             </IconButton>
@@ -99,11 +155,32 @@ export default function Header() {
           </Box>
           <Search>
             <SearchIconWrapper>
-              <SearchIcon />
+              <SearchIcon sx={{ ml: -1 }} />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    edge="end"
+                    size="small"
+                    sx={{
+                      position: "absolute",
+                      right: "6px",
+                      color: "white",
+                      bgcolor: "gray",
+                      borderRadius: "4px !important",
+                      padding: 0.5,
+                      ":hover": {
+                        bgcolor: "gray",
+                      },
+                    }}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
             />
           </Search>
           <Box
@@ -122,7 +199,7 @@ export default function Header() {
               sx={{ mr: 2 }}
             />
             <Badge
-              sx={{ mt: 1, mr: 1 }}
+              sx={{ mt: 1, mr: 1, cursor: "pointer" }}
               badgeContent={0}
               size="sm"
               showZero={false}
@@ -132,6 +209,12 @@ export default function Header() {
           </Box>
         </Toolbar>
       </AppBar>
+      <span id="back-to-top-anchor" />
+      <ScrollTop {...props}>
+        <Fab size="small" aria-label="scroll back to top">
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </ScrollTop>
     </Box>
   );
 }
