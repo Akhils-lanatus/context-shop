@@ -101,9 +101,15 @@ ScrollTop.propTypes = {
 };
 
 export default function Header(props) {
-  const { toggleTheme, darkMode, setSearchedProducts } = useGlobalCartContext();
+  const {
+    toggleTheme,
+    darkMode,
+    setSearchedProducts,
+    searchQuery,
+    searchedData,
+  } = useGlobalCartContext();
   const [open, setOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchStr, setsearchStr] = useState("");
   return (
     <Box>
       {open && <FilterDrawer open={open} setOpen={setOpen} />}
@@ -122,26 +128,28 @@ export default function Header(props) {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={() => setOpen(true)}
-              sx={{
-                position: {
-                  sm: "absolute",
-                  lg: "unset",
-                  md: "unset",
-                  xs: "unset",
-                },
-                left: { sm: 0 },
-                ml: { sm: 2 },
-                mr: { sm: 2 },
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
+            {searchQuery?.trim() !== "" && searchedData?.length > 0 && (
+              <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={() => setOpen(true)}
+                sx={{
+                  position: {
+                    sm: "absolute",
+                    lg: "unset",
+                    md: "unset",
+                    xs: "unset",
+                  },
+                  left: { sm: 0 },
+                  ml: { sm: 2 },
+                  mr: { sm: 2 },
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
             <Typography
               variant="h6"
               component="div"
@@ -160,8 +168,8 @@ export default function Header(props) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchStr}
+              onChange={(e) => setsearchStr(e.target.value)}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -179,7 +187,7 @@ export default function Header(props) {
                       },
                     }}
                     onClick={() => {
-                      setSearchedProducts(searchQuery);
+                      setSearchedProducts(searchStr);
                     }}
                   >
                     <SearchIcon />

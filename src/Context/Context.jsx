@@ -1,5 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useReducer } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import cartReducer from "./Reducer";
 
 //cart-context
@@ -24,6 +30,7 @@ const initialState = {
 // eslint-disable-next-line react/prop-types
 const CartContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  const [searchedData, setSearchedData] = useState([]);
 
   //fetchApiData
   const fetchApiData = async () => {
@@ -60,8 +67,8 @@ const CartContextProvider = ({ children }) => {
   };
 
   //search-data
-  const setSearchedProducts = (searchQuery) => {
-    dispatch({ type: "SEARCH_PRODUCTS", payload: searchQuery });
+  const setSearchedProducts = (searchStr) => {
+    dispatch({ type: "SEARCH_PRODUCTS", payload: searchStr });
   };
 
   //clear-all-filters
@@ -83,6 +90,8 @@ const CartContextProvider = ({ children }) => {
         setSelectedPriceRange,
         setIncludeOutOfStock,
         setSearchedProducts,
+        searchedData,
+        setSearchedData,
       }}
     >
       {children}

@@ -57,10 +57,10 @@ const cartReducer = (state, action) => {
     }
 
     case "SEARCH_PRODUCTS":
-      let searchQuery = action.payload;
+      let searchStr = action.payload;
       return {
         ...state,
-        searchQuery,
+        searchQuery: searchStr,
       };
 
     case "CLEAR_ALL_FILTERS":

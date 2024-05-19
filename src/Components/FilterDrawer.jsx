@@ -27,7 +27,21 @@ export default function FilterDrawer({ open, setOpen }) {
     clearAllFilters,
     setSelectedPriceRange,
     setIncludeOutOfStock,
+    products,
+    searchedData,
+    searchQuery,
   } = useGlobalCartContext();
+
+  const filteredProducts = products.filter(
+    (item) => item.category === searchedData[0].category
+  );
+
+  const allBrands = new Set();
+
+  for (const item of filteredProducts) {
+    allBrands.add(item.brand);
+  }
+
   const minPriceRef = useRef();
   const maxPriceRef = useRef();
   const handlePriceData = () => {
@@ -146,39 +160,44 @@ export default function FilterDrawer({ open, setOpen }) {
               </List>
             </div>
 
-            <Typography
-              level="title-md"
-              fontWeight="bold"
-              sx={{
-                mt: 1,
-                color: darkMode && "#fff",
-              }}
-            >
-              Brand
-            </Typography>
-            <List size="lg">
-              {["Apple", "Motorola", "Samsung"].map((brand, index) => {
-                const selected = Array.from(
-                  selectedFilters.selectedBrand
-                )?.includes(brand);
-                return (
-                  <ListItem key={index}>
-                    <Checkbox
-                      checked={selected}
-                      onChange={(event) => {
-                        setSelectedFilters(
-                          "selectedBrand",
-                          brand,
-                          event.target.checked
-                        );
-                      }}
-                      label={brand}
-                      sx={{ color: darkMode && "#fff" }}
-                    />
-                  </ListItem>
-                );
-              })}
-            </List>
+            {searchQuery?.length > 2 && (
+              <>
+                <Typography
+                  level="title-md"
+                  fontWeight="bold"
+                  sx={{
+                    mt: 1,
+                    color: darkMode && "#fff",
+                  }}
+                >
+                  Brand
+                </Typography>
+
+                <List size="lg">
+                  {Array.from(allBrands)?.map((brand, index) => {
+                    const selected = Array.from(
+                      selectedFilters.selectedBrand
+                    )?.includes(brand);
+                    return (
+                      <ListItem key={index}>
+                        <Checkbox
+                          checked={selected}
+                          onChange={(event) => {
+                            setSelectedFilters(
+                              "selectedBrand",
+                              brand,
+                              event.target.checked
+                            );
+                          }}
+                          label={brand}
+                          sx={{ color: darkMode && "#fff" }}
+                        />
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              </>
+            )}
 
             <Typography
               level="title-md"
