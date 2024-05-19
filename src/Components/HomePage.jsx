@@ -211,12 +211,12 @@ export default function HomePage() {
       )}
 
       {productsState?.length === 0 && (
-        <Box>
+        <Box sx={{ height: "100%" }}>
           <Typography
             sx={{ textAlign: "center" }}
             textColor={darkMode && "common.white"}
             level="h1"
-            mt={8}
+            padding={8}
           >
             No Data Found
           </Typography>
