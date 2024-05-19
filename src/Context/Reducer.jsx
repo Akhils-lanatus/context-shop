@@ -56,6 +56,13 @@ const cartReducer = (state, action) => {
       };
     }
 
+    case "SEARCH_PRODUCTS":
+      let searchQuery = action.payload;
+      return {
+        ...state,
+        searchQuery,
+      };
+
     case "CLEAR_ALL_FILTERS":
       return {
         ...state,

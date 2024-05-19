@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,7 +14,6 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useGlobalCartContext } from "../Context/Context";
 import FilterDrawer from "./FilterDrawer";
 import { InputAdornment } from "@mui/material";
-import { VisibilityOff } from "@mui/icons-material";
 import Fab from "@mui/material/Fab";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Fade from "@mui/material/Fade";
@@ -102,8 +101,9 @@ ScrollTop.propTypes = {
 };
 
 export default function Header(props) {
-  const { toggleTheme, darkMode } = useGlobalCartContext();
-  const [open, setOpen] = React.useState(false);
+  const { toggleTheme, darkMode, setSearchedProducts } = useGlobalCartContext();
+  const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <Box>
       {open && <FilterDrawer open={open} setOpen={setOpen} />}
@@ -160,6 +160,8 @@ export default function Header(props) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -175,6 +177,9 @@ export default function Header(props) {
                       ":hover": {
                         bgcolor: "gray",
                       },
+                    }}
+                    onClick={() => {
+                      setSearchedProducts(searchQuery);
                     }}
                   >
                     <SearchIcon />

@@ -23,6 +23,7 @@ const App = () => {
       sx={{
         bgcolor: darkMode ? "#212121" : "#fff",
         color: !darkMode ? "#212121" : "#fff",
+        height: "100vh",
       }}
     >
       <Header />

@@ -10,6 +10,7 @@ const initialState = {
   isLoading: true,
   products: [],
   darkMode: false,
+  searchQuery: "",
   selectedFilters: {
     deliveryDays: new Set(),
     selectedBrand: new Set(),
@@ -58,6 +59,11 @@ const CartContextProvider = ({ children }) => {
     dispatch({ type: "SET_INCLUDEOUTOFSTOCK", payload: isIOOSchecked });
   };
 
+  //search-data
+  const setSearchedProducts = (searchQuery) => {
+    dispatch({ type: "SEARCH_PRODUCTS", payload: searchQuery });
+  };
+
   //clear-all-filters
   const clearAllFilters = () => {
     dispatch({ type: "CLEAR_ALL_FILTERS" });
@@ -76,6 +82,7 @@ const CartContextProvider = ({ children }) => {
         clearAllFilters,
         setSelectedPriceRange,
         setIncludeOutOfStock,
+        setSearchedProducts,
       }}
     >
       {children}
