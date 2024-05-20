@@ -33,37 +33,39 @@ export default function HomePage() {
   };
 
   const productsState = React.useMemo(() => {
-    if (searchQuery === "" && selectedCategory === "") {
-      return products;
+    const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+
+    if (normalizedSearchQuery === "") {
+      return selectedCategory !== ""
+        ? products.filter((item) => item.category === selectedCategory)
+        : products;
     } else {
-      const searchedProducts = products?.filter(
-        (product) =>
-          product?.name
-            .trim()
-            .toLowerCase()
-            .includes(searchQuery.trim().toLowerCase()) ||
-          product?.brand
-            .trim()
-            .toLowerCase()
-            .includes(searchQuery.trim().toLowerCase()) ||
-          product?.category
-            .trim()
-            .toLowerCase()
-            .includes(searchQuery.trim().toLowerCase()) ||
-          product?.sale_price.toString().includes(searchQuery.trim()) ||
-          product?.Stocks.toString().includes(searchQuery.trim())
-      );
-      return searchedProducts;
+      return products.filter((product) => {
+        const { name, brand, category, sale_price, Stocks } = product;
+        const normalizedSalePrice = sale_price.toString();
+        const normalizedStocks = Stocks.toString();
+
+        return (
+          name.toLowerCase().includes(normalizedSearchQuery) ||
+          brand.toLowerCase().includes(normalizedSearchQuery) ||
+          category.toLowerCase().includes(normalizedSearchQuery) ||
+          normalizedSalePrice.includes(normalizedSearchQuery) ||
+          normalizedStocks.includes(normalizedSearchQuery)
+        );
+      });
     }
   }, [products, searchQuery, selectedCategory]);
-
-  console.log(productsState);
 
   React.useEffect(() => {
     setPage(0);
     setRowsPerPage(8);
     setSearchedData(productsState);
-  }, [productsState, searchQuery, setSearchedData]);
+  }, [productsState]);
+
+  React.useEffect(() => {
+    setPage(0);
+    setRowsPerPage(8);
+  }, [searchQuery, selectedCategory]);
 
   return (
     <Box sx={{ pt: 14 }}>
