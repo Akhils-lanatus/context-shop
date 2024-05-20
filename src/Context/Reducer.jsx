@@ -71,20 +71,6 @@ const cartReducer = (state, action) => {
         searchQuery: action.payload,
       };
 
-    case "SHOW_DATA_OF_SELECTED_CATEGORY": {
-      const products = [...state.originalData];
-      const selectedCategoryData = products?.filter(
-        (val) => val.category === action.payload
-      );
-
-      return {
-        ...state,
-        searchQuery: "",
-        products: selectedCategoryData,
-        selectedCategory: action.payload,
-      };
-    }
-
     case "CLEAR_ALL_FILTERS":
       return {
         ...state,

@@ -110,17 +110,9 @@ export default function Header(props) {
     searchQuery,
     searchedData,
     allCategories,
-    showOfSelectedCategory,
-    selectedCategory,
-    clearCategory,
   } = useGlobalCartContext();
   const [open, setOpen] = useState(false);
   const [searchStr, setSearchStr] = useState("");
-
-  useMemo(() => {
-    setSearchStr("");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategory]);
 
   return (
     <Box>
@@ -179,7 +171,6 @@ export default function Header(props) {
                     }}
                     onClick={() => {
                       setSearchedProducts(searchStr);
-                      clearCategory();
                     }}
                   >
                     <SearchIcon />
@@ -224,28 +215,27 @@ export default function Header(props) {
         <Toolbar sx={{ minHeight: "fit-content !important", padding: 0 }}>
           <>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              {searchedData?.length > 0 &&
-                (searchQuery?.trim() !== "" || selectedCategory !== "") && (
-                  <IconButton
-                    size="large"
-                    edge="start"
-                    aria-label="menu"
-                    onClick={() => setOpen(true)}
-                    sx={{
-                      position: {
-                        sm: "absolute",
-                        lg: "unset",
-                        md: "unset",
-                        xs: "unset",
-                      },
-                      color: "white",
-                      left: { sm: 0 },
-                      ml: 1,
-                    }}
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                )}
+              {searchedData?.length > 0 && searchQuery?.trim() !== "" && (
+                <IconButton
+                  size="large"
+                  edge="start"
+                  aria-label="menu"
+                  onClick={() => setOpen(true)}
+                  sx={{
+                    position: {
+                      sm: "absolute",
+                      lg: "unset",
+                      md: "unset",
+                      xs: "unset",
+                    },
+                    color: "white",
+                    left: { sm: 0 },
+                    ml: 1,
+                  }}
+                >
+                  <MenuIcon />
+                </IconButton>
+              )}
             </Box>
             <Box
               sx={{
@@ -291,9 +281,6 @@ export default function Header(props) {
                       overlay
                       disableIcon
                       value={value}
-                      onChange={(e) => {
-                        showOfSelectedCategory(e.target.value);
-                      }}
                       slotProps={{
                         label: () => ({
                           sx: {
@@ -313,8 +300,7 @@ export default function Header(props) {
                             ...(checked && {
                               "--variant-borderWidth": "2px",
                               "&&": {
-                                borderBottom:
-                                  selectedCategory !== "" && "2px solid white",
+                                borderBottom: "2px solid white",
                                 borderRadius: 0,
                               },
                             }),

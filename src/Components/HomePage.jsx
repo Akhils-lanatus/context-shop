@@ -13,14 +13,8 @@ import { Box } from "@mui/joy";
 import TablePagination from "@mui/material/TablePagination";
 
 export default function HomePage() {
-  const {
-    darkMode,
-    products,
-    originalData,
-    searchQuery,
-    setSearchedData,
-    selectedCategory,
-  } = useGlobalCartContext();
+  const { darkMode, products, originalData, searchQuery, setSearchedData } =
+    useGlobalCartContext();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(8);
 
@@ -67,7 +61,7 @@ export default function HomePage() {
     setPage(0);
     setRowsPerPage(8);
     setSearchedData(productsState);
-  }, [productsState, searchQuery, selectedCategory, setSearchedData]);
+  }, [productsState, searchQuery, setSearchedData]);
 
   return (
     <Box sx={{ pt: 14 }}>
