@@ -63,6 +63,13 @@ const cartReducer = (state, action) => {
         searchQuery: action.payload,
       };
 
+    case "SET_CATEGORY":
+      return {
+        ...state,
+        selectedCategory: action.payload,
+        searchQuery: "",
+      };
+
     case "CLEAR_ALL_FILTERS":
       return {
         ...state,

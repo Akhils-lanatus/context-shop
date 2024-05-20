@@ -17,6 +17,7 @@ const initialState = {
   darkMode: false,
   searchQuery: "",
   allCategories: [],
+  selectedCategory: "",
   selectedFilters: {
     deliveryDays: new Set(),
     selectedBrand: new Set(),
@@ -70,6 +71,11 @@ const CartContextProvider = ({ children }) => {
     dispatch({ type: "SEARCH_PRODUCTS", payload: searchStr });
   };
 
+  //set-category
+  const setSelectedCategory = (cat) => {
+    dispatch({ type: "SET_CATEGORY", payload: cat });
+  };
+
   //clear-all-filters
   const clearAllFilters = () => {
     dispatch({ type: "CLEAR_ALL_FILTERS" });
@@ -91,6 +97,7 @@ const CartContextProvider = ({ children }) => {
         setSearchQuery,
         searchedData,
         setSearchedData,
+        setSelectedCategory,
       }}
     >
       {children}
