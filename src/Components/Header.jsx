@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
+import IconButton from "@mui/joy/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
@@ -19,6 +19,9 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Fade from "@mui/material/Fade";
 import PropTypes from "prop-types";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
+import Radio from "@mui/joy/Radio";
+import RadioGroup from "@mui/joy/RadioGroup";
+import Sheet from "@mui/joy/Sheet";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -27,9 +30,8 @@ const Search = styled("div")(({ theme }) => ({
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginLeft: 10,
   marginRight: 10,
-  width: "40%",
+  width: "42%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(1),
     width: "40%",
@@ -71,7 +73,7 @@ function ScrollTop(props) {
     threshold: 100,
   });
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     const anchor = document.querySelector("#back-to-top-anchor");
 
     if (anchor) {
@@ -107,15 +109,26 @@ export default function Header(props) {
     setSearchedProducts,
     searchQuery,
     searchedData,
+    allCategories,
+    showOfSelectedCategory,
+    selectedCategory,
+    clearCategory,
   } = useGlobalCartContext();
   const [open, setOpen] = useState(false);
-  const [searchStr, setsearchStr] = useState("");
+  const [searchStr, setSearchStr] = useState("");
+
+  useMemo(() => {
+    setSearchStr("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory]);
+
   return (
     <Box>
       {open && <FilterDrawer open={open} setOpen={setOpen} />}
       <AppBar position="fixed" sx={{ bgcolor: "#254061" }}>
         <Toolbar
           sx={{
+            padding: 0,
             display: "flex",
             alignItems: "center",
             justifyContent: {
@@ -128,28 +141,6 @@ export default function Header(props) {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            {searchQuery?.trim() !== "" && searchedData?.length > 0 && (
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                onClick={() => setOpen(true)}
-                sx={{
-                  position: {
-                    sm: "absolute",
-                    lg: "unset",
-                    md: "unset",
-                    xs: "unset",
-                  },
-                  left: { sm: 0 },
-                  ml: { sm: 2 },
-                  mr: { sm: 2 },
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
             <Typography
               variant="h6"
               component="div"
@@ -169,7 +160,7 @@ export default function Header(props) {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
               value={searchStr}
-              onChange={(e) => setsearchStr(e.target.value)}
+              onChange={(e) => setSearchStr(e.target.value)}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -188,6 +179,7 @@ export default function Header(props) {
                     }}
                     onClick={() => {
                       setSearchedProducts(searchStr);
+                      clearCategory();
                     }}
                   >
                     <SearchIcon />
@@ -220,6 +212,121 @@ export default function Header(props) {
               <Typography fontSize="25px">🛒</Typography>
             </Badge>
           </Box>
+        </Toolbar>
+      </AppBar>
+      <AppBar
+        position="fixed"
+        sx={{
+          bgcolor: "#353535",
+          mt: { lg: 8, md: 8, sm: 8, xs: 7 },
+        }}
+      >
+        <Toolbar sx={{ minHeight: "fit-content !important", padding: 0 }}>
+          <>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              {searchedData?.length > 0 &&
+                (searchQuery?.trim() !== "" || selectedCategory !== "") && (
+                  <IconButton
+                    size="large"
+                    edge="start"
+                    aria-label="menu"
+                    onClick={() => setOpen(true)}
+                    sx={{
+                      position: {
+                        sm: "absolute",
+                        lg: "unset",
+                        md: "unset",
+                        xs: "unset",
+                      },
+                      color: "white",
+                      left: { sm: 0 },
+                      ml: 1,
+                    }}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                )}
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                overflowX: {
+                  lg: "hidden",
+                  md: "hidden",
+                  sm: "scroll",
+                  xs: "scroll",
+                },
+                overflowYL: "hidden",
+                width: "100%",
+              }}
+            >
+              <RadioGroup
+                orientation="horizontal"
+                size="md"
+                sx={{
+                  gap: {
+                    lg: 3,
+                    md: 3,
+                    sm: 3,
+                    xs: 0,
+                  },
+
+                  lineHeight: 1,
+
+                  padding: 1,
+                }}
+              >
+                {allCategories?.map((value, i) => (
+                  <Sheet
+                    key={i}
+                    sx={{
+                      textAlign: "center",
+                      width: "100%",
+                      bgcolor: "#353535",
+                    }}
+                  >
+                    <Radio
+                      label={`${value}`}
+                      overlay
+                      disableIcon
+                      value={value}
+                      onChange={(e) => {
+                        showOfSelectedCategory(e.target.value);
+                      }}
+                      slotProps={{
+                        label: () => ({
+                          sx: {
+                            fontWeight: "md",
+                            fontSize: "md",
+                            color: "#fff",
+                            textTransform: "capitalize",
+                            padding: 1,
+                          },
+                        }),
+                        action: ({ checked }) => ({
+                          sx: () => ({
+                            ":hover": {
+                              bgcolor: "transparent",
+                            },
+                            borderColor: "transparent",
+                            ...(checked && {
+                              "--variant-borderWidth": "2px",
+                              "&&": {
+                                borderBottom:
+                                  selectedCategory !== "" && "2px solid white",
+                                borderRadius: 0,
+                              },
+                            }),
+                          }),
+                        }),
+                      }}
+                    />
+                  </Sheet>
+                ))}
+              </RadioGroup>
+            </Box>
+          </>
         </Toolbar>
       </AppBar>
       <span id="back-to-top-anchor" />

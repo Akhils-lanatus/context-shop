@@ -13,8 +13,14 @@ import { Box } from "@mui/joy";
 import TablePagination from "@mui/material/TablePagination";
 
 export default function HomePage() {
-  const { darkMode, products, searchQuery, setSearchedData } =
-    useGlobalCartContext();
+  const {
+    darkMode,
+    products,
+    originalData,
+    searchQuery,
+    setSearchedData,
+    selectedCategory,
+  } = useGlobalCartContext();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(8);
 
@@ -36,7 +42,7 @@ export default function HomePage() {
     if (searchQuery === "") {
       return products;
     } else {
-      const searchedProducts = products?.filter(
+      const searchedProducts = originalData?.filter(
         (product) =>
           product?.name
             .trim()
@@ -55,17 +61,17 @@ export default function HomePage() {
       );
       return searchedProducts;
     }
-  }, [products, searchQuery]);
+  }, [products, originalData, searchQuery]);
 
   React.useEffect(() => {
     setPage(0);
     setRowsPerPage(8);
     setSearchedData(productsState);
-  }, [searchQuery]);
+  }, [productsState, searchQuery, selectedCategory, setSearchedData]);
 
   return (
-    <Box sx={{ pt: 8 }}>
-      {productsState.length > 0 && (
+    <Box sx={{ pt: 14 }}>
+      {productsState?.length > 0 && (
         <>
           <Grid container sx={{ flexGrow: 1, mt: 2 }}>
             {productsState

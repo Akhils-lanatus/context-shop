@@ -17,7 +17,11 @@ import Sheet from "@mui/joy/Sheet";
 import Typography from "@mui/joy/Typography";
 import Done from "@mui/icons-material/Done";
 import { useGlobalCartContext } from "../Context/Context";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
+import CloseRounded from "@mui/icons-material/CloseRounded";
 import { TextField } from "@mui/material";
+import { IconButton } from "@mui/joy";
 
 export default function FilterDrawer({ open, setOpen }) {
   const {
@@ -31,6 +35,8 @@ export default function FilterDrawer({ open, setOpen }) {
     searchedData,
     searchQuery,
   } = useGlobalCartContext();
+
+  const [value, setValue] = React.useState(null);
 
   const filteredProducts = products.filter(
     (item) => item.category === searchedData[0]?.category
@@ -91,6 +97,48 @@ export default function FilterDrawer({ open, setOpen }) {
           <ModalClose />
           <Divider sx={{ mt: "auto" }} />
           <DialogContent sx={{ gap: 2 }}>
+            <Typography
+              level="title-md"
+              fontWeight="bold"
+              sx={{ mt: 1, color: darkMode && "#fff" }}
+            >
+              Sort Products
+            </Typography>
+            <Box
+              sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+            >
+              <Select
+                value={value}
+                placeholder="Sort By"
+                onChange={(e, newValue) => setValue(newValue)}
+                sx={{
+                  width: "90%",
+                }}
+                {...(value && {
+                  endDecorator: (
+                    <IconButton
+                      size="sm"
+                      variant="plain"
+                      color="neutral"
+                      onMouseDown={(event) => {
+                        event.stopPropagation();
+                      }}
+                      onClick={() => {
+                        setValue(null);
+                      }}
+                    >
+                      <CloseRounded />
+                    </IconButton>
+                  ),
+                  indicator: null,
+                })}
+              >
+                <Option value="dog">Dog</Option>
+                <Option value="cat">Cat</Option>
+                <Option value="fish">Fish</Option>
+                <Option value="bird">BirdBirdBirdBird</Option>
+              </Select>
+            </Box>
             <Typography
               level="title-md"
               fontWeight="bold"

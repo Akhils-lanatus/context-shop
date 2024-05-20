@@ -6,12 +6,20 @@ const cartReducer = (state, action) => {
         isLoading: true,
       };
 
-    case "GET_ALL_PRODUCTS":
+    case "GET_ALL_PRODUCTS": {
+      let allCategories = new Set();
+      for (const cat of action.payload) {
+        allCategories.add(cat.category);
+      }
+
       return {
         ...state,
         isLoading: false,
         products: action.payload,
+        originalData: action.payload,
+        allCategories: Array.from(allCategories),
       };
+    }
 
     case "TOGGLE_THEME":
       return {
@@ -32,7 +40,7 @@ const cartReducer = (state, action) => {
         selectedFilters,
       };
     }
-    case "SET_PRICE_FILTER":
+    case "SET_PRICE_FILTER": {
       const { min, max } = action.payload;
 
       const selectedFilters = {
@@ -44,8 +52,9 @@ const cartReducer = (state, action) => {
         ...state,
         selectedFilters: selectedFilters,
       };
+    }
 
-    case "SET_INCLUDEOUTOFSTOCK": {
+    case "SET_INCLUDE_OUT_OF_STOCK": {
       const selectedFilters = {
         ...state.selectedFilters,
         showOutOfStock: action.payload,
@@ -57,11 +66,24 @@ const cartReducer = (state, action) => {
     }
 
     case "SEARCH_PRODUCTS":
-      let searchStr = action.payload;
       return {
         ...state,
-        searchQuery: searchStr,
+        searchQuery: action.payload,
       };
+
+    case "SHOW_DATA_OF_SELECTED_CATEGORY": {
+      const products = [...state.originalData];
+      const selectedCategoryData = products?.filter(
+        (val) => val.category === action.payload
+      );
+
+      return {
+        ...state,
+        searchQuery: "",
+        products: selectedCategoryData,
+        selectedCategory: action.payload,
+      };
+    }
 
     case "CLEAR_ALL_FILTERS":
       return {

@@ -14,9 +14,12 @@ const CartContext = createContext();
 //initial-State
 const initialState = {
   isLoading: true,
+  originalData: [],
   products: [],
   darkMode: false,
   searchQuery: "",
+  allCategories: [],
+  selectedCategory: "",
   selectedFilters: {
     deliveryDays: new Set(),
     selectedBrand: new Set(),
@@ -46,6 +49,14 @@ const CartContextProvider = ({ children }) => {
     }
   };
 
+  const clearCategory = () => {
+    if (state.selectedCategory !== "") {
+      state.selectedCategory = "";
+      state.products = state.originalData;
+    }
+    return { ...state };
+  };
+
   //toggle theme
   const toggleTheme = () => {
     dispatch({ type: "TOGGLE_THEME" });
@@ -62,13 +73,19 @@ const CartContextProvider = ({ children }) => {
   };
 
   //include-out-of-stock
-  const setIncludeOutOfStock = (isIOOSchecked) => {
-    dispatch({ type: "SET_INCLUDEOUTOFSTOCK", payload: isIOOSchecked });
+  const setIncludeOutOfStock = (bool) => {
+    dispatch({ type: "SET_INCLUDE_OUT_OF_STOCK", payload: bool });
   };
 
   //search-data
   const setSearchedProducts = (searchStr) => {
     dispatch({ type: "SEARCH_PRODUCTS", payload: searchStr });
+  };
+
+  //selected-category
+  const showOfSelectedCategory = (category) => {
+    console.log(category);
+    dispatch({ type: "SHOW_DATA_OF_SELECTED_CATEGORY", payload: category });
   };
 
   //clear-all-filters
@@ -92,6 +109,8 @@ const CartContextProvider = ({ children }) => {
         setSearchedProducts,
         searchedData,
         setSearchedData,
+        showOfSelectedCategory,
+        clearCategory,
       }}
     >
       {children}
