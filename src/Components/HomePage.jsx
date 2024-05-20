@@ -55,7 +55,7 @@ export default function HomePage() {
       );
       return searchedProducts;
     }
-  }, [searchQuery]);
+  }, [products, searchQuery]);
 
   React.useEffect(() => {
     setPage(0);

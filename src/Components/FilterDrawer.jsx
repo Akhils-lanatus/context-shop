@@ -33,7 +33,7 @@ export default function FilterDrawer({ open, setOpen }) {
   } = useGlobalCartContext();
 
   const filteredProducts = products.filter(
-    (item) => item.category === searchedData[0].category
+    (item) => item.category === searchedData[0]?.category
   );
 
   const allBrands = new Set();
