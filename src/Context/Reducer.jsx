@@ -22,7 +22,6 @@ const cartReducer = (state, action) => {
     case "SET_FILTER": {
       let { filterOn, item, bool } = action.payload;
       const selectedFilters = { ...state.selectedFilters };
-
       selectedFilters[filterOn].add(item);
       if (!bool) {
         selectedFilters[filterOn].delete(item);
@@ -33,6 +32,36 @@ const cartReducer = (state, action) => {
         selectedFilters,
       };
     }
+    case "SET_PRICE_FILTER":
+      const { min, max } = action.payload;
+
+      const selectedFilters = {
+        ...state.selectedFilters,
+        selectedPriceRange: { min, max },
+      };
+
+      return {
+        ...state,
+        selectedFilters: selectedFilters,
+      };
+
+    case "SET_INCLUDEOUTOFSTOCK": {
+      const selectedFilters = {
+        ...state.selectedFilters,
+        showOutOfStock: action.payload,
+      };
+      return {
+        ...state,
+        selectedFilters,
+      };
+    }
+
+    case "SEARCH_PRODUCTS":
+      let searchStr = action.payload;
+      return {
+        ...state,
+        searchQuery: searchStr,
+      };
 
     case "CLEAR_ALL_FILTERS":
       return {
@@ -41,7 +70,8 @@ const cartReducer = (state, action) => {
           deliveryDays: new Set(),
           selectedBrand: new Set(),
           selectedRatings: new Set(),
-          availableInStock: false,
+          selectedPriceRange: { min: 0, max: 0 },
+          showOutOfStock: false,
         },
       };
   }

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { Fragment, useRef } from "react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Rating from "@mui/material/Rating";
@@ -14,17 +14,52 @@ import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import Stack from "@mui/joy/Stack";
 import Sheet from "@mui/joy/Sheet";
-
 import Typography from "@mui/joy/Typography";
 import Done from "@mui/icons-material/Done";
 import { useGlobalCartContext } from "../Context/Context";
+import { TextField } from "@mui/material";
 
 export default function FilterDrawer({ open, setOpen }) {
-  const { darkMode, selectedFilters, setSelectedFilters, clearAllFilters } =
-    useGlobalCartContext();
-  console.log(selectedFilters);
+  const {
+    darkMode,
+    selectedFilters,
+    setSelectedFilters,
+    clearAllFilters,
+    setSelectedPriceRange,
+    setIncludeOutOfStock,
+    products,
+    searchedData,
+    searchQuery,
+  } = useGlobalCartContext();
+
+  const filteredProducts = products.filter(
+    (item) => item.category === searchedData[0].category
+  );
+
+  const allBrands = new Set();
+
+  for (const item of filteredProducts) {
+    allBrands.add(item.brand);
+  }
+
+  const minPriceRef = useRef();
+  const maxPriceRef = useRef();
+  const handlePriceData = () => {
+    let minValue = +minPriceRef.current.value;
+    let maxValue = +maxPriceRef.current.value;
+    if (minValue >= 0 && maxValue !== 0 && maxValue > minValue) {
+      setSelectedPriceRange({
+        min: minValue,
+        max: maxValue,
+      });
+
+      minPriceRef.current.value = "";
+      maxPriceRef.current.value = "";
+    }
+  };
+
   return (
-    <React.Fragment>
+    <Fragment>
       <Drawer
         size="md"
         variant="plain"
@@ -125,39 +160,44 @@ export default function FilterDrawer({ open, setOpen }) {
               </List>
             </div>
 
-            <Typography
-              level="title-md"
-              fontWeight="bold"
-              sx={{
-                mt: 1,
-                color: darkMode && "#fff",
-              }}
-            >
-              Brand
-            </Typography>
-            <List size="lg">
-              {["Apple", "Motorola", "Samsung"].map((brand, index) => {
-                const selected = Array.from(
-                  selectedFilters.selectedBrand
-                )?.includes(brand);
-                return (
-                  <ListItem key={index}>
-                    <Checkbox
-                      checked={selected}
-                      onChange={(event) => {
-                        setSelectedFilters(
-                          "selectedBrand",
-                          brand,
-                          event.target.checked
-                        );
-                      }}
-                      label={brand}
-                      sx={{ color: darkMode && "#fff" }}
-                    />
-                  </ListItem>
-                );
-              })}
-            </List>
+            {searchQuery?.length > 2 && (
+              <>
+                <Typography
+                  level="title-md"
+                  fontWeight="bold"
+                  sx={{
+                    mt: 1,
+                    color: darkMode && "#fff",
+                  }}
+                >
+                  Brand
+                </Typography>
+
+                <List size="lg">
+                  {Array.from(allBrands)?.map((brand, index) => {
+                    const selected = Array.from(
+                      selectedFilters.selectedBrand
+                    )?.includes(brand);
+                    return (
+                      <ListItem key={index}>
+                        <Checkbox
+                          checked={selected}
+                          onChange={(event) => {
+                            setSelectedFilters(
+                              "selectedBrand",
+                              brand,
+                              event.target.checked
+                            );
+                          }}
+                          label={brand}
+                          sx={{ color: darkMode && "#fff" }}
+                        />
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              </>
+            )}
 
             <Typography
               level="title-md"
@@ -215,6 +255,81 @@ export default function FilterDrawer({ open, setOpen }) {
                 );
               })}
             </List>
+
+            <Typography
+              level="title-md"
+              fontWeight="bold"
+              sx={{
+                mt: 1,
+                color: darkMode && "#fff",
+              }}
+            >
+              Price
+            </Typography>
+            <Box
+              display={"flex"}
+              flexDirection={"row"}
+              gap={2}
+              alignItems={"center"}
+              ml={2}
+            >
+              <TextField
+                sx={{
+                  width: "30%",
+                }}
+                placeholder="Min"
+                type="number"
+                inputRef={minPriceRef}
+                size="small"
+                inputProps={{
+                  style: {
+                    color: darkMode && "#fff",
+                  },
+                }}
+              />
+              <TextField
+                sx={{ width: "30%" }}
+                placeholder="Max"
+                type="number"
+                inputRef={maxPriceRef}
+                size="small"
+                inputProps={{
+                  style: { color: darkMode && "#fff" },
+                }}
+              />
+              <Button
+                variant="solid"
+                color="neutral"
+                sx={{ color: darkMode && "white" }}
+                onClick={() => {
+                  handlePriceData();
+                }}
+              >
+                Go
+              </Button>
+            </Box>
+            <Typography
+              level="title-md"
+              fontWeight="bold"
+              sx={{
+                mt: 1,
+                color: darkMode && "#fff",
+              }}
+            >
+              Availability
+            </Typography>
+            <List>
+              <ListItem>
+                <Checkbox
+                  checked={selectedFilters.showOutOfStock}
+                  onChange={(event) => {
+                    setIncludeOutOfStock(event.target.checked);
+                  }}
+                  label="Include Out of Stock"
+                  sx={{ color: darkMode && "#fff" }}
+                />
+              </ListItem>
+            </List>
           </DialogContent>
 
           <Divider sx={{ mt: "auto" }} />
@@ -226,7 +341,11 @@ export default function FilterDrawer({ open, setOpen }) {
           >
             <Button
               sx={{ color: darkMode && "#fff" }}
-              onClick={clearAllFilters}
+              onClick={() => {
+                clearAllFilters();
+                minPriceRef.current.value = "";
+                maxPriceRef.current.value = "";
+              }}
             >
               Clear
             </Button>
@@ -234,6 +353,6 @@ export default function FilterDrawer({ open, setOpen }) {
           </Stack>
         </Sheet>
       </Drawer>
-    </React.Fragment>
+    </Fragment>
   );
 }

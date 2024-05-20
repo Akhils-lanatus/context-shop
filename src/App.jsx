@@ -1,11 +1,13 @@
+import React from "react";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGlobalCartContext } from "./Context/Context";
 import Header from "./Components/Header";
 import { Box } from "@mui/material";
+import HomePage from "./Components/HomePage";
 
 const App = () => {
-  const { isLoading, products, darkMode } = useGlobalCartContext();
+  const { isLoading, darkMode } = useGlobalCartContext();
   if (isLoading) {
     return (
       <Backdrop
@@ -21,10 +23,11 @@ const App = () => {
       sx={{
         bgcolor: darkMode ? "#212121" : "#fff",
         color: !darkMode ? "#212121" : "#fff",
+        height: "100% ",
       }}
     >
       <Header />
-      <h2>Hello </h2>
+      <HomePage />
     </Box>
   );
 };
