@@ -34,7 +34,6 @@ export default function FilterDrawer({ open, setOpen }) {
     products,
     searchedData,
     searchQuery,
-    selectedCategory,
   } = useGlobalCartContext();
 
   const [value, setValue] = React.useState(null);
@@ -209,7 +208,7 @@ export default function FilterDrawer({ open, setOpen }) {
               </List>
             </div>
 
-            {(searchQuery?.length > 2 || selectedCategory !== "") && (
+            {searchQuery?.length > 2 && (
               <>
                 <Typography
                   level="title-md"

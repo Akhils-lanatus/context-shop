@@ -106,7 +106,7 @@ export default function Header(props) {
   const {
     toggleTheme,
     darkMode,
-    setSearchedProducts,
+    setSearchQuery,
     searchQuery,
     searchedData,
     allCategories,
@@ -168,7 +168,7 @@ export default function Header(props) {
                       },
                     }}
                     onClick={() => {
-                      setSearchedProducts(searchStr);
+                      setSearchQuery(searchStr);
                     }}
                   >
                     <SearchIcon />

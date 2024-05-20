@@ -13,7 +13,6 @@ const CartContext = createContext();
 
 //initial-State
 const initialState = {
-  isLoading: true,
   products: [],
   darkMode: false,
   searchQuery: "",
@@ -35,7 +34,6 @@ const CartContextProvider = ({ children }) => {
 
   //fetchApiData
   const fetchApiData = async () => {
-    dispatch({ type: "SET_LOADING" });
     try {
       await fetch("https://akhil1911.github.io/api/products.json")
         .then((response) => response.json())
@@ -68,7 +66,7 @@ const CartContextProvider = ({ children }) => {
   };
 
   //search-data
-  const setSearchedProducts = (searchStr) => {
+  const setSearchQuery = (searchStr) => {
     dispatch({ type: "SEARCH_PRODUCTS", payload: searchStr });
   };
 
@@ -90,7 +88,7 @@ const CartContextProvider = ({ children }) => {
         clearAllFilters,
         setSelectedPriceRange,
         setIncludeOutOfStock,
-        setSearchedProducts,
+        setSearchQuery,
         searchedData,
         setSearchedData,
       }}

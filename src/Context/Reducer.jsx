@@ -1,11 +1,5 @@
 const cartReducer = (state, action) => {
   switch (action.type) {
-    case "SET_LOADING":
-      return {
-        ...state,
-        isLoading: true,
-      };
-
     case "GET_ALL_PRODUCTS": {
       let allCategories = new Set();
       for (const cat of action.payload) {
@@ -14,7 +8,6 @@ const cartReducer = (state, action) => {
 
       return {
         ...state,
-        isLoading: false,
         products: action.payload,
         allCategories: Array.from(allCategories),
       };
