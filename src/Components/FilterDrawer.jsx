@@ -35,7 +35,7 @@ export default function FilterDrawer({ open, setOpen }) {
     searchedData,
     searchQuery,
     selectedCategory,
-  } = useGlobalCar.tContext();
+  } = useGlobalCartContext();
 
   const [value, setValue] = React.useState(null);
 

@@ -14,7 +14,6 @@ const CartContext = createContext();
 //initial-State
 const initialState = {
   isLoading: true,
-  originalData: [],
   products: [],
   darkMode: false,
   searchQuery: "",

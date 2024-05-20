@@ -13,7 +13,7 @@ import { Box } from "@mui/joy";
 import TablePagination from "@mui/material/TablePagination";
 
 export default function HomePage() {
-  const { darkMode, products, originalData, searchQuery, setSearchedData } =
+  const { darkMode, products, searchQuery, setSearchedData } =
     useGlobalCartContext();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(8);
@@ -36,7 +36,7 @@ export default function HomePage() {
     if (searchQuery === "") {
       return products;
     } else {
-      const searchedProducts = originalData?.filter(
+      const searchedProducts = products?.filter(
         (product) =>
           product?.name
             .trim()
@@ -55,7 +55,7 @@ export default function HomePage() {
       );
       return searchedProducts;
     }
-  }, [products, originalData, searchQuery]);
+  }, [products, searchQuery]);
 
   React.useEffect(() => {
     setPage(0);

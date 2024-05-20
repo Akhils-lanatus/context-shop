@@ -16,7 +16,6 @@ const cartReducer = (state, action) => {
         ...state,
         isLoading: false,
         products: action.payload,
-        originalData: action.payload,
         allCategories: Array.from(allCategories),
       };
     }

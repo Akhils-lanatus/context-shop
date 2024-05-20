@@ -30,7 +30,7 @@ const Search = styled("div")(({ theme }) => ({
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginRight: 10,
+  // marginLeft: 10,
   width: "42%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(1),
@@ -127,7 +127,7 @@ export default function Header(props) {
               lg: "space-between",
               md: "space-evenly",
               sm: "center",
-              xs: "start",
+              xs: "center",
             },
             gap: 1,
           }}
@@ -136,10 +136,8 @@ export default function Header(props) {
             <Typography
               variant="h6"
               component="div"
-              mr={1}
-              sx={{
-                display: { xs: "none", md: "flex" },
-              }}
+              // ml={1}
+              sx={{ cursor: "pointer" }}
             >
               ShopDB
             </Typography>
@@ -183,25 +181,16 @@ export default function Header(props) {
             display={"flex"}
             alignItems={"center"}
             justifyContent={"space-around"}
-            width={"15%"}
           >
             <Switch
               color={darkMode ? "primary" : "neutral"}
               slotProps={{ input: { "aria-label": "dark mode" } }}
-              startDecorator={<LightModeIcon />}
-              endDecorator={<DarkModeIcon />}
+              startDecorator={<LightModeIcon fontSize="small" />}
+              endDecorator={<DarkModeIcon fontSize="small" />}
               checked={darkMode}
               onChange={toggleTheme}
-              sx={{ mr: 2 }}
-            />
-            <Badge
-              sx={{ mt: 1, mr: 1, cursor: "pointer" }}
-              badgeContent={0}
               size="sm"
-              showZero={false}
-            >
-              <Typography fontSize="25px">🛒</Typography>
-            </Badge>
+            />
           </Box>
         </Toolbar>
       </AppBar>
@@ -212,9 +201,14 @@ export default function Header(props) {
           mt: { lg: 8, md: 8, sm: 8, xs: 7 },
         }}
       >
-        <Toolbar sx={{ minHeight: "fit-content !important", padding: 0 }}>
+        <Toolbar
+          sx={{
+            minHeight: "fit-content !important",
+            padding: "0 !important",
+          }}
+        >
           <>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ display: "flex", alignItems: "center", padding: 0 }}>
               {searchedData?.length > 0 && searchQuery?.trim() !== "" && (
                 <IconButton
                   size="large"
@@ -248,7 +242,7 @@ export default function Header(props) {
                   xs: "scroll",
                 },
                 overflowYL: "hidden",
-                width: "100%",
+                width: "85%",
               }}
             >
               <RadioGroup
@@ -311,6 +305,21 @@ export default function Header(props) {
                   </Sheet>
                 ))}
               </RadioGroup>
+            </Box>
+            <Box
+              width={"15%"}
+              display={"flex"}
+              justifyContent={"end"}
+              alignItems={"center"}
+            >
+              <Badge
+                sx={{ mt: 1, mr: 1, cursor: "pointer" }}
+                badgeContent={0}
+                size="sm"
+                showZero={false}
+              >
+                <Typography fontSize="25px">🛒</Typography>
+              </Badge>
             </Box>
           </>
         </Toolbar>
