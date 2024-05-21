@@ -61,6 +61,7 @@ const cartReducer = (state, action) => {
       return {
         ...state,
         searchQuery: action.payload,
+        selectedCategory: "",
       };
 
     case "SET_CATEGORY":

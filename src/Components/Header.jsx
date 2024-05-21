@@ -278,6 +278,7 @@ export default function Header(props) {
                       label={`${value}`}
                       overlay
                       disableIcon
+                      checked={selectedCategory === value}
                       value={value}
                       onChange={(e) => {
                         setSelectedCategory(e.target.value);
@@ -301,7 +302,8 @@ export default function Header(props) {
                             ...(checked && {
                               "--variant-borderWidth": "2px",
                               "&&": {
-                                borderBottom: "2px solid white",
+                                borderBottom:
+                                  !!selectedCategory && "2px solid white",
                                 borderRadius: 0,
                               },
                             }),
