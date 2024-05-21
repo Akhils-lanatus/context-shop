@@ -71,7 +71,15 @@ export default function HomePage() {
     <Box sx={{ pt: 14 }}>
       {productsState?.length > 0 && (
         <>
-          <Grid container sx={{ flexGrow: 1, mt: 2 }}>
+          <Grid
+            container
+            sx={{
+              flexGrow: 1,
+              mt: 2,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             {productsState
               ?.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
               .map((item, index) => {

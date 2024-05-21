@@ -213,19 +213,13 @@ export default function Header(props) {
         >
           <>
             <Box sx={{ display: "flex", alignItems: "center", padding: 0 }}>
-              {searchedData?.length > 0 && searchQuery?.trim() !== "" && (
+              {(searchQuery?.trim() !== "" || selectedCategory !== "") && (
                 <IconButton
                   size="large"
                   edge="start"
                   aria-label="menu"
                   onClick={() => setOpen(true)}
                   sx={{
-                    position: {
-                      sm: "absolute",
-                      lg: "unset",
-                      md: "unset",
-                      xs: "unset",
-                    },
                     color: "white",
                     left: { sm: 0 },
                     ml: 1,
