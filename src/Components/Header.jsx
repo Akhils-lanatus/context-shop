@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -108,7 +108,6 @@ export default function Header(props) {
     darkMode,
     setSearchQuery,
     searchQuery,
-    searchedData,
     allCategories,
     setSelectedCategory,
     selectedCategory,
