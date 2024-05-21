@@ -110,10 +110,14 @@ export default function Header(props) {
     searchQuery,
     searchedData,
     allCategories,
+    setSelectedCategory,
+    selectedCategory,
   } = useGlobalCartContext();
   const [open, setOpen] = useState(false);
   const [searchStr, setSearchStr] = useState("");
-
+  useEffect(() => {
+    selectedCategory !== "" && setSearchStr("");
+  }, [selectedCategory]);
   return (
     <Box>
       {open && <FilterDrawer open={open} setOpen={setOpen} />}
@@ -275,6 +279,9 @@ export default function Header(props) {
                       overlay
                       disableIcon
                       value={value}
+                      onChange={(e) => {
+                        setSelectedCategory(e.target.value);
+                      }}
                       slotProps={{
                         label: () => ({
                           sx: {
