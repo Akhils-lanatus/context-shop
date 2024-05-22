@@ -35,9 +35,8 @@ export default function FilterDrawer({ open, setOpen }) {
     searchedData,
     searchQuery,
     selectedCategory,
+    setSortByFilter,
   } = useGlobalCartContext();
-
-  const [value, setValue] = React.useState(null);
 
   const filteredProducts = products.filter(
     (item) => item.category === searchedData[0]?.category
@@ -59,9 +58,6 @@ export default function FilterDrawer({ open, setOpen }) {
         min: minValue,
         max: maxValue,
       });
-
-      minPriceRef.current.value = "";
-      maxPriceRef.current.value = "";
     }
   };
 
@@ -109,13 +105,13 @@ export default function FilterDrawer({ open, setOpen }) {
               sx={{ width: "100%", display: "flex", justifyContent: "center" }}
             >
               <Select
-                value={value}
+                value={selectedFilters.sortBy}
                 placeholder="Sort By"
-                onChange={(e, newValue) => setValue(newValue)}
+                onChange={(e, newValue) => setSortByFilter(newValue)}
                 sx={{
                   width: "90%",
                 }}
-                {...(value && {
+                {...(selectedFilters.sortBy && {
                   endDecorator: (
                     <IconButton
                       size="sm"
@@ -125,7 +121,7 @@ export default function FilterDrawer({ open, setOpen }) {
                         event.stopPropagation();
                       }}
                       onClick={() => {
-                        setValue(null);
+                        setSortByFilter(null);
                       }}
                     >
                       <CloseRounded />
@@ -134,10 +130,9 @@ export default function FilterDrawer({ open, setOpen }) {
                   indicator: null,
                 })}
               >
-                <Option value="dog">Dog</Option>
-                <Option value="cat">Cat</Option>
-                <Option value="fish">Fish</Option>
-                <Option value="bird">BirdBirdBirdBird</Option>
+                <Option value="HTL">Price High To Low</Option>
+                <Option value="LTH">Price Low To High</Option>
+                <Option value="PR ">Product Rating</Option>
               </Select>
             </Box>
             <Typography
@@ -209,44 +204,45 @@ export default function FilterDrawer({ open, setOpen }) {
               </List>
             </div>
 
-            {(searchQuery?.length > 2 || selectedCategory !== "") && (
-              <>
-                <Typography
-                  level="title-md"
-                  fontWeight="bold"
-                  sx={{
-                    mt: 1,
-                    color: darkMode && "#fff",
-                  }}
-                >
-                  Brand
-                </Typography>
+            {(searchQuery?.length > 2 || selectedCategory !== "") &&
+              searchedData?.length > 0 && (
+                <>
+                  <Typography
+                    level="title-md"
+                    fontWeight="bold"
+                    sx={{
+                      mt: 1,
+                      color: darkMode && "#fff",
+                    }}
+                  >
+                    Brand
+                  </Typography>
 
-                <List size="lg">
-                  {Array.from(allBrands)?.map((brand, index) => {
-                    const selected = Array.from(
-                      selectedFilters.selectedBrand
-                    )?.includes(brand);
-                    return (
-                      <ListItem key={index}>
-                        <Checkbox
-                          checked={selected}
-                          onChange={(event) => {
-                            setSelectedFilters(
-                              "selectedBrand",
-                              brand,
-                              event.target.checked
-                            );
-                          }}
-                          label={brand}
-                          sx={{ color: darkMode && "#fff" }}
-                        />
-                      </ListItem>
-                    );
-                  })}
-                </List>
-              </>
-            )}
+                  <List size="lg">
+                    {Array.from(allBrands)?.map((brand, index) => {
+                      const selected = Array.from(
+                        selectedFilters.selectedBrand
+                      )?.includes(brand);
+                      return (
+                        <ListItem key={index}>
+                          <Checkbox
+                            checked={selected}
+                            onChange={(event) => {
+                              setSelectedFilters(
+                                "selectedBrand",
+                                brand,
+                                event.target.checked
+                              );
+                            }}
+                            label={brand}
+                            sx={{ color: darkMode && "#fff" }}
+                          />
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </>
+              )}
 
             <Typography
               level="title-md"

@@ -24,6 +24,7 @@ const initialState = {
     selectedRatings: new Set(),
     selectedPriceRange: { min: 0, max: 0 },
     showOutOfStock: false,
+    sortBy: null,
   },
 };
 
@@ -66,6 +67,10 @@ const CartContextProvider = ({ children }) => {
     dispatch({ type: "SET_INCLUDE_OUT_OF_STOCK", payload: bool });
   };
 
+  const setSortByFilter = (value) => {
+    dispatch({ type: "SET_SORT_BY_FILTER", payload: value });
+  };
+
   //search-data
   const setSearchQuery = (searchStr) => {
     dispatch({ type: "SEARCH_PRODUCTS", payload: searchStr });
@@ -98,6 +103,7 @@ const CartContextProvider = ({ children }) => {
         searchedData,
         setSearchedData,
         setSelectedCategory,
+        setSortByFilter,
       }}
     >
       {children}

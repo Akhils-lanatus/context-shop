@@ -13,7 +13,6 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useGlobalCartContext } from "../Context/Context";
 import FilterDrawer from "./FilterDrawer";
-import { InputAdornment } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Fade from "@mui/material/Fade";
@@ -111,12 +110,10 @@ export default function Header(props) {
     allCategories,
     setSelectedCategory,
     selectedCategory,
+    clearAllFilters,
   } = useGlobalCartContext();
   const [open, setOpen] = useState(false);
-  const [searchStr, setSearchStr] = useState("");
-  useEffect(() => {
-    selectedCategory !== "" && setSearchStr("");
-  }, [selectedCategory]);
+
   return (
     <Box>
       {open && <FilterDrawer open={open} setOpen={setOpen} />}
@@ -141,6 +138,11 @@ export default function Header(props) {
               component="div"
               // ml={1}
               sx={{ cursor: "pointer" }}
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedCategory("");
+                clearAllFilters();
+              }}
             >
               ShopDB
             </Typography>
@@ -152,32 +154,11 @@ export default function Header(props) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
-              value={searchStr}
-              onChange={(e) => setSearchStr(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    edge="end"
-                    size="small"
-                    sx={{
-                      position: "absolute",
-                      right: "6px",
-                      color: "white",
-                      bgcolor: "gray",
-                      borderRadius: "4px !important",
-                      padding: 0.5,
-                      ":hover": {
-                        bgcolor: "gray",
-                      },
-                    }}
-                    onClick={() => {
-                      setSearchQuery(searchStr);
-                    }}
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              }
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                clearAllFilters();
+              }}
             />
           </Search>
           <Box
@@ -275,6 +256,7 @@ export default function Header(props) {
                       value={value}
                       onChange={(e) => {
                         setSelectedCategory(e.target.value);
+                        clearAllFilters();
                       }}
                       slotProps={{
                         label: () => ({

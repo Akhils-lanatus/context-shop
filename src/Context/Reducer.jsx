@@ -46,6 +46,12 @@ const cartReducer = (state, action) => {
       };
     }
 
+    case "SET_SORT_BY_FILTER": {
+      const selectedFilters = { ...state.selectedFilters };
+      selectedFilters.sortBy = action.payload;
+      return { ...state, selectedFilters };
+    }
+
     case "SET_INCLUDE_OUT_OF_STOCK": {
       const selectedFilters = {
         ...state.selectedFilters,
@@ -80,6 +86,7 @@ const cartReducer = (state, action) => {
           selectedRatings: new Set(),
           selectedPriceRange: { min: 0, max: 0 },
           showOutOfStock: false,
+          sortBy: null,
         },
       };
   }
