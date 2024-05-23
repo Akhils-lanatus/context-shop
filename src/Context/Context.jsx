@@ -18,6 +18,7 @@ const initialState = {
   searchQuery: "",
   allCategories: [],
   selectedCategory: "",
+  filteredProducts: [],
   selectedFilters: {
     deliveryDays: new Set(),
     selectedBrand: new Set(),

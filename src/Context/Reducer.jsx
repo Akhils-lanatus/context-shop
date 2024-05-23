@@ -22,16 +22,54 @@ const cartReducer = (state, action) => {
     case "SET_FILTER": {
       let { filterOn, item, bool } = action.payload;
       const selectedFilters = { ...state.selectedFilters };
-      selectedFilters[filterOn].add(item);
-      if (!bool) {
+
+      if (bool) {
+        selectedFilters[filterOn].add(item);
+      } else {
         selectedFilters[filterOn].delete(item);
+      }
+
+      let deliveryDays = Array.from(selectedFilters.deliveryDays);
+      let selectedRatings = Array.from(selectedFilters.selectedRatings);
+      let selectedBrand = Array.from(selectedFilters.selectedBrand);
+
+      let newData = [...state.products].filter((product) => {
+        if (
+          state.selectedCategory !== "" &&
+          product.category === state.selectedCategory
+        ) {
+          let deliveryDayMatch =
+            deliveryDays.length === 0 ||
+            deliveryDays.includes(product.deliveryInDays);
+
+          let ratingMatch =
+            selectedRatings.length === 0 ||
+            selectedRatings.some(
+              (selectedRating) =>
+                product.average_product_rating >= selectedRating
+            );
+
+          let brandMatch =
+            selectedBrand.length === 0 || selectedBrand.includes(product.brand);
+          return deliveryDayMatch && ratingMatch && brandMatch;
+        }
+      });
+
+      if (
+        deliveryDays.length === 0 &&
+        selectedRatings.length === 0 &&
+        selectedBrand.length === 0
+      ) {
+        newData = [];
       }
 
       return {
         ...state,
         selectedFilters,
+        // filteredProducts: newData,
       };
     }
+
     case "SET_PRICE_FILTER": {
       const { min, max } = action.payload;
 

@@ -36,15 +36,18 @@ export default function FilterDrawer({ open, setOpen }) {
     searchQuery,
     selectedCategory,
     setSortByFilter,
+    filteredProducts,
   } = useGlobalCartContext();
 
-  const filteredProducts = products.filter(
+  console.log({ filteredProducts });
+
+  const tempArrToGetBrands = products.filter(
     (item) => item.category === searchedData[0]?.category
   );
 
   const allBrands = new Set();
 
-  for (const item of filteredProducts) {
+  for (const item of tempArrToGetBrands) {
     allBrands.add(item.brand);
   }
 
@@ -150,7 +153,7 @@ export default function FilterDrawer({ open, setOpen }) {
                   "--ListItem-radius": "20px",
                 }}
               >
-                {["1 Day", "2 Day", "3 Day", "1 Week"].map((item, index) => {
+                {[1, 2, 3, 4, 5].map((item, index) => {
                   const selected = Array.from(
                     selectedFilters.deliveryDays
                   )?.includes(item);
@@ -178,7 +181,7 @@ export default function FilterDrawer({ open, setOpen }) {
                         color="neutral"
                         disableIcon
                         overlay
-                        label={item}
+                        label={`${item} Days`}
                         variant="outlined"
                         checked={selected}
                         onChange={(event) => {
