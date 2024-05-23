@@ -36,10 +36,7 @@ export default function FilterDrawer({ open, setOpen }) {
     searchQuery,
     selectedCategory,
     setSortByFilter,
-    filteredProducts,
   } = useGlobalCartContext();
-
-  console.log({ filteredProducts });
 
   const tempArrToGetBrands = products.filter(
     (item) => item.category === searchedData[0]?.category
