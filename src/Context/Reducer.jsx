@@ -66,7 +66,7 @@ const cartReducer = (state, action) => {
       return {
         ...state,
         selectedFilters,
-        // filteredProducts: newData,
+        filteredProducts: newData,
       };
     }
 
